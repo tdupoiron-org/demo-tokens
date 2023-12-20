@@ -31,6 +31,6 @@ async function createGitHubRelease(tag_name, target_commitish) {
   });
 }
 
-createGitHubReference("refs/heads/branchA", "cc9dc9b7a270fa1ae80ba17ca42101c53c796bdb");
-updateGitHubReference("heads/branchA", "0094876c61bce74db32b9a2e194870bc528475e4");
-createGitHubRelease("v1.0.0", "0094876c61bce74db32b9a2e194870bc528475e4");
+createGitHubReference("refs/heads/branchB", "cc9dc9b7a270fa1ae80ba17ca42101c53c796bdb");
+updateGitHubReference("heads/branchB", "0094876c61bce74db32b9a2e194870bc528475e4");
+createGitHubRelease("v1.0.0_B", "0094876c61bce74db32b9a2e194870bc528475e4");
