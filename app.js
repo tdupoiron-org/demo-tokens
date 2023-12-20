@@ -13,4 +13,14 @@ async function createGitHubReference(newRef, sha) {
   });
 }
 
-createGitHubReference("refs/heads/main", "cc9dc9b7a270fa1ae80ba17ca42101c53c796bdb");
+async function updateGitHubReference(ref, sha) {
+  const response = await octokit.request("PATCH /repos/{owner}/{repo}/git/refs/{ref}", {
+    owner: "tdupoiron-org",
+    repo: "demo-tokens",
+    ref: ref,
+    sha: sha,
+  });
+}
+
+createGitHubReference("refs/heads/branchA", "cc9dc9b7a270fa1ae80ba17ca42101c53c796bdb");
+updateGitHubReference("refs/heads/branchA", "cc9dc9b7a270fa1ae80ba17ca42101c53c796bdb");
