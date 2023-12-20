@@ -44,21 +44,23 @@ async function getGitHubContents(path) {
 }
 
 async function pushGitHubContent(path, content, message) {
-  const response = await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+  const response = await octokit.rest.repos.createOrUpdateFileContents({
     owner: "tdupoiron-org",
     repo: "demo-tokens",
     path: path,
     message: message,
-    content: content,
+    content: content.content,
+    sha: content.sha,
   });
 }
 
-async function deleteGitHubContent(path, message) {
-  const response = await octokit.request("DELETE /repos/{owner}/{repo}/contents/{path}", {
+async function deleteGitHubContent(path, message, sha) {
+  const response = await octokit.rest.repos.deleteFile({
     owner: "tdupoiron-org",
     repo: "demo-tokens",
     path: path,
     message: message,
+    sha: sha,
   });
 }
 
@@ -76,12 +78,15 @@ async function saveFileInTempFolder(filename, content) {
 }
 
 async function main() {
-  const contents = await getGitHubContents(".github/workflows/hello-world.yml");
+  let contents = await getGitHubContents(".github/workflows/hello-world.yml");
   console.log(contents);
-  //const content = Buffer.from(contents.content, 'base64').toString();
-  //await saveFileInTempFolder("test.txt", content);
-  await deleteGitHubContent("test.yml", "delete test file");
-  //await pushGitHubContent("test.yml", contents, ".github/workflows");
+
+  let fileName = "test.yml";
+  let filePath = ".github/workflows/test.yml";
+  //await pushGitHubContent(fileName, contents, "test at root folder");
+  await pushGitHubContent(filePath, contents, "test in .github/workflows folder");
+  contents = await getGitHubContents(filePath);
+  await deleteGitHubContent(filePath, "delete test", contents.sha);
 }
 
 main();
